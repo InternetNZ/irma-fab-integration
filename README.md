@@ -9,8 +9,6 @@ The credentials will be shared in the W3C verifiable credential format. This spe
 [here](https://www.w3.org/TR/vc-data-model/).
 
 ### How to run it on your local
-First, make sure to create `.env` file from `.env.sample` and set the value for `SINGLE_SOURCE_API_KEY` environment
-variable.
 
 #### In a Container
 You can run and manage irma backend in a container using these command:
