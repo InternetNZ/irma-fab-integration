@@ -1,3 +1,5 @@
+![Checks](https://github.com/InternetNZ/irma-fab-integration/actions/workflows/checks.yml/badge.svg)
+
 # IRMA FAB Integration
 This repository contains FAB relying-party APIs also a CLI tool in order to work with FAB and IRMA.
 
@@ -36,7 +38,27 @@ APIs should be accessible on http://localhost:5050
 
 ### Deployment
 This a standard python WSGI app that can be deployed using standard methods. If you would like to deploy it on AWS Lambda,
-it can be done by Zappa. The configuration is already provided.
+it can be done by [Zappa](https://github.com/zappa/Zappa). The configuration is already provided.
+
+To deploy using Zappa, fist make sure the requirements are installed:
+```
+python3 -m venv .venv
+source ./.venv/bin/activate
+pip install -r requirements.txt
+pip install -r requirements.deploy.txt
+```
+
+To deploy the app:
+```
+zappa deploy demo
+```
+
+To update the deployed app:
+```
+zappa update demo
+```
+
+`NOTE:` Make sure you create the DynamoDB table `fab-vc` in your AWS account.
 
 ### FAB API endpoints
 #### POST /fab/vc
