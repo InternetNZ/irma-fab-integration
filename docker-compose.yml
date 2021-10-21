@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  dynamodb-local:
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+    image: "amazon/dynamodb-local:latest"
+    container_name: dynamodb-local
+    ports:
+      - ${LOCAL_DYNAMODB_PORT:-8000}:8000
+    volumes:
+      - ./dynamodb:/home/dynamodblocal/data
+    working_dir: /home/dynamodblocal
+    networks:
+        - irma-fab-net
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./runserver.py:/app/runserver.py:cached
+      - ./fab:/app/fab:cached
+      - ./requirements.txt:/app/requirements.txt:cached
+      - ./requirements.dev.txt:/app/requirements.dev.txt:cached
+      - ./scripts:/scripts:cached
+    restart: always
+    ports:
+      - '${API_PORT:-5050}:5050'
+    env_file:
+      - .env
+    environment:
+      TZ: UTC
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION:-ap-southeast-2}
+      DYNAMODB_ENDPOINT_URL: ${DYNAMODB_ENDPOINT_URL:-http://dynamodb-local:8000}
+    links:
+        - 'dynamodb-local'
+    networks:
+      irma-fab-net:
+        aliases:
+          - backend.local.irma-fab-net.nz
+
+networks:
+    irma-fab-net:
+
