@@ -12,7 +12,7 @@ RUN pip install -r requirements.txt
 
 COPY runserver.py /app/
 COPY scripts/ /scripts/
-COPY fab/ /app/irma_fab
+COPY fab/ /app/fab
 COPY fab_irma.py /app/fab_irma.py
 
 # Dev dependencies
