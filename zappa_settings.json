@@ -1,0 +1,12 @@
+{
+    "demo": {
+        "api_key_required": true,
+        "app_function": "fab.main.app",
+        "aws_region": "ap-southeast-2",
+        "cors": true,
+        "project_name": "fab-irma-integration",
+        "runtime": "python3.8",
+        "s3_bucket": "zappa-fab-irma-integration",
+        "timeout_seconds": 60
+    }
+}
