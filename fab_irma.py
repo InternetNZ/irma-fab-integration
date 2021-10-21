@@ -12,9 +12,10 @@ import subprocess
 RELYING_PARTY_ID = ""
 RELYING_PARTY_NAME = ""
 RELYING_PARTY_LOGO = ""
+RELYING_PARTY_API = ""
 API_KEY = ""
-IRMA_TOKEN = "secret-fake-token"
-IRMA_SERVER = "https://pnonvsmdy9.execute-api.ap-southeast-2.amazonaws.com/dev"
+IRMA_TOKEN = ""
+IRMA_SERVER = ""
 
 FAB_IDENTITY_CREDENTIAL = 'identity'
 FAB_IDENTITY_ATTRIBUTES = [
@@ -68,11 +69,10 @@ def fab_disclose(args):
 
 def _fetch_fab_disclosed_attributes(session_id):
     response = requests.get(
-        url=f"https://f9emnttxd6.execute-api.ap-southeast-2.amazonaws.com/demo/fab/vc/{session_id}",
+        url=f"{RELYING_PARTY_API}{session_id}",
         headers={
             "Content-Type": "application/json",
-            "x-api-key": API_KEY,
-            "origin": "http://localhost:8000"
+            "x-api-key": API_KEY
         }
     )
 
@@ -100,8 +100,8 @@ def get_fab_disclosed_attributes(args):
 
 
 def irma_issue_nsn(args):
-    irma_command = ['irma', 'session', '--server', IRMA_SERVER,
-                    '-a', 'token', '--key', IRMA_TOKEN, '--issue',
+    irma_command = ['irma', 'session', '--server', args.irma_server,
+                    '-a', 'token', '--key', args.irma_token, '--issue',
                     'irma-demo.inz-nsn.nsn={}'.format(args.nsn)]
 
     if args.verbose:
@@ -155,6 +155,14 @@ if __name__ == "__main__":
     )
 
     parser_fab_disclose.add_argument(
+        '--relying-party-api',
+        nargs='?',
+        required=True,
+        default=RELYING_PARTY_API,
+        help='Relying-party API endpoint'
+    )
+
+    parser_fab_disclose.add_argument(
         '--session-id',
         nargs='?',
         default=datetime.datetime.now().strftime('%s'),
@@ -200,6 +208,20 @@ if __name__ == "__main__":
     parser_irma_issue_nsn = subparsers.add_parser(
         'irma_issue_nsn',
         help='Issues given NSN to IRMA Wallet.'
+    )
+
+    parser_irma_issue_nsn.add_argument(
+        '--irma-server',
+        required=True,
+        default=IRMA_SERVER,
+        help='IRMA server'
+    )
+
+    parser_irma_issue_nsn.add_argument(
+        '--irma-token',
+        required=True,
+        default=IRMA_TOKEN,
+        help='IRMA server token'
     )
 
     parser_irma_issue_nsn.add_argument(

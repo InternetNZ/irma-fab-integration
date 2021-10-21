@@ -159,7 +159,9 @@ source ./.venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Then to get help:
+### How to Run it
+
+To get help:
 ```
 ./fab_irma.py -h
 usage: fab_irma.py [-h] [-v] {fab_disclose,get_fab_disclosed_attributes,irma_issue_nsn} ...
@@ -182,4 +184,16 @@ optional arguments:
 To disclose `nsn` credential from DIA app:
 ```
 ./fab_irma.py fab_disclose --relying-party-id 1 --relying-party-name test --attributes nsn
+```
+
+### Configuration
+You can open the script with text editor and set default values for required arguments:
+```
+RELYING_PARTY_ID = ""
+RELYING_PARTY_NAME = ""
+RELYING_PARTY_LOGO = ""
+RELYING_PARTY_API = ""
+API_KEY = ""
+IRMA_TOKEN = ""
+IRMA_SERVER = ""
 ```
